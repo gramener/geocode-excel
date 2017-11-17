@@ -1,8 +1,19 @@
+Function GoogleReverseGeocode(lat As Double, lng As Double) As String
+    Dim xDoc As New MSXML2.DOMDocument
+    xDoc.async = False
+    xDoc.Load ("https://maps.googleapis.com/maps/api/geocode/xml?latlng=" + Str(lat) + "," + Str(lng))
+    If xDoc.parseError.ErrorCode <> 0 Then
+        GoogleReverseGeocode = xDoc.parseError.reason
+    Else
+        xDoc.setProperty "SelectionLanguage", "XPath"
+        GoogleReverseGeocode = xDoc.SelectSingleNode("//formatted_address").Text
+    End If
+End Function
+
 Function GoogleGeocode(address As String) As String
     Dim xDoc As New MSXML2.DOMDocument
     xDoc.async = False
-    xDoc.Load ("http://maps.googleapis.com/maps/api/geocode/" + _
-        "xml?address=" + address + "&sensor=false")
+    xDoc.Load ("http://maps.googleapis.com/maps/api/geocode/xml?address=" + address)
     If xDoc.parseError.ErrorCode <> 0 Then
         GoogleGeocode = xDoc.parseError.reason
     Else
