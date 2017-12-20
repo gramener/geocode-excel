@@ -1,4 +1,4 @@
-[Download Geocode.xlsm](raw/master/Geocode.xlsm). This is an Excel file (with a Visual Basic
+[Download Geocode.xlsm](../../raw/master/Geocode.xlsm). This is an Excel file (with a Visual Basic
 macro function) that geocodes addresses and reverse geo-codes locations using the
 Google's Geocoding API.
 
@@ -18,7 +18,7 @@ You are [limited to](https://developers.google.com/maps/documentation/geocoding/
 
 A typical workflow that keeps you within these limits is below:
 
-1. Open [Geocode.xlsm](raw/master/Geocode.xlsm). If prompted, Enable Editing and Enable Content.
+1. Open [Geocode.xlsm](../../raw/master/Geocode.xlsm). If prompted, Enable Editing and Enable Content.
 2. Fill column A with addresses
 3. In cell B2, type `=GoogleGeocode(A2)`
 4. Copy the formula in B2 down about 30-40 (typically one page) *and wait*
