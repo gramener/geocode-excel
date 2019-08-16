@@ -2,16 +2,6 @@
 macro function) that geocodes addresses and reverse geo-codes locations using the
 Geocoding APIs.
 
-## Google Geocoding functions
-
-The Google Geocoding API is comprehensive, but requires an API key. See:
-<https://developers.google.com/maps/documentation/geocoding/get-api-key>
-
-- `=GoogleGeocode(address, api_key)` Converts a string address (e.g. "10 Downing Street" or "Tokyo, Japan") into a "latitude,longitude" string
-- `=GoogleReverseGeocode(lat, lng, api_key)` Converts a latitude and longitude into an address
-
-![NominatimGeocode usage](usage.gif)
-
 ## Nominatim Geocoding functions
 
 The Nominatim API uses OpenStreetMap, which is not as comprehensive as Google's but is free. See:
@@ -20,6 +10,15 @@ The Nominatim API uses OpenStreetMap, which is not as comprehensive as Google's 
 `=NominatimGeocode(address)` Converts a string address (e.g. "10 Downing Street" or "Tokyo, Japan") into a "latitude,longitude" string
 `=NominatimReverseGeocode(lat, lng)` Converts a latitude and longitude into an address
 
+![NominatimGeocode usage](usage.gif)
+
+## Google Geocoding functions
+
+The Google Geocoding API is comprehensive, but requires an API key. See:
+<https://developers.google.com/maps/documentation/geocoding/get-api-key>
+
+- `=GoogleGeocode(address, api_key)` Converts a string address (e.g. "10 Downing Street" or "Tokyo, Japan") into a "latitude,longitude" string
+- `=GoogleReverseGeocode(lat, lng, api_key)` Converts a latitude and longitude into an address
 
 ## Usage
 
