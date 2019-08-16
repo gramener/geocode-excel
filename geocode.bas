@@ -1,35 +1,37 @@
+Const vbErr = 3     ' Red
+Const vbOK = 23     ' Cyan
+
 Public Sub RecalculateSelection()
-    ' Disable Automatic Calculations. Then add this as a macro with Ctrl+Q shortcut
     If TypeName(Selection) = "Range" Then
         Selection.Calculate
     End If
 End Sub
 
-Function GoogleReverseGeocode(lat As Double, lng As Double) As String
-    ' =GoogleReverseGeocode(latitude, longitude) returns an address
+Function GoogleReverseGeocode(lat As Double, lng As Double, key As String) As String
     Dim xDoc As New MSXML2.DOMDocument
     xDoc.async = False
-    xDoc.Load ("https://maps.googleapis.com/maps/api/geocode/xml?latlng=" + Str(lat) + "," + Str(lng))
+    xDoc.Load ("https://maps.googleapis.com/maps/api/geocode/xml?key=" + key + "&latlng=" + Str(lat) + "," + Str(lng))
     If xDoc.parseError.ErrorCode <> 0 Then
+        Application.Caller.Font.ColorIndex = vbErr
         GoogleReverseGeocode = xDoc.parseError.reason
     Else
         xDoc.SetProperty "SelectionLanguage", "XPath"
         result = xDoc.SelectSingleNode("/GeocodeResponse/status").Text
         If result <> "OK" Then
+            Application.Caller.Font.ColorIndex = vbErr
             GoogleReverseGeocode = result
         Else
+            Application.Caller.Font.ColorIndex = vbOK
             GoogleReverseGeocode = xDoc.SelectSingleNode("//formatted_address").Text
         End If
     End If
 End Function
 
-Function GoogleGeocode(address As String) As String
-    Const vbErr = 3     ' Red
-    Const vbOK = 23     ' Cyan
+Function GoogleGeocode(address As String, key As String) As String
     Application.Caller.Font.ColorIndex = xlNone
     Dim xDoc As New MSXML2.DOMDocument
     xDoc.async = False
-    xDoc.Load ("http://maps.googleapis.com/maps/api/geocode/xml?address=" + address)
+    xDoc.Load ("https://maps.googleapis.com/maps/api/geocode/xml?key=" + key + "&address=" + address)
     If xDoc.parseError.ErrorCode <> 0 Then
         Application.Caller.Font.ColorIndex = vbErr
         GoogleGeocode = xDoc.parseError.reason
@@ -40,37 +42,57 @@ Function GoogleGeocode(address As String) As String
             Application.Caller.Font.ColorIndex = vbErr
             GoogleGeocode = result
         Else
-            lat = xDoc.SelectSingleNode("//lat").Text
-            lng = xDoc.SelectSingleNode("//lng").Text
             Application.Caller.Font.ColorIndex = vbOK
-            GoogleGeocode = lat & "," & lng
+            GoogleGeocode = xDoc.SelectSingleNode("//lat").Text & "," & xDoc.SelectSingleNode("//lng").Text
         End If
     End If
 End Function
 
-Sub Geocode()
-    address = InputBox("Type an address", "Address")
+Function NominatimReverseGeocode(lat As Double, lng As Double) As String
+    On Error GoTo eh
     Dim xDoc As New MSXML2.DOMDocument
     xDoc.async = False
-    xDoc.Load ("http://maps.googleapis.com/maps/api/geocode/" + _
-        "xml?address=" + address + "&sensor=false")
+    Url = "https://nominatim.openstreetmap.org/reverse?lat=" + CStr(lat) + "&lon=" + CStr(lng)
+    xDoc.Load ("https://nominatim.openstreetmap.org/reverse?lat=" + CStr(lat) + "&lon=" + CStr(lng))
     If xDoc.parseError.ErrorCode <> 0 Then
-        x = xDoc.parseError.reason
+        Application.Caller.Font.ColorIndex = vbErr
+        NominatimReverseGeocode = xDoc.parseError.reason
     Else
-        nRow = 0
-        Set xNodes = xDoc.SelectNodes("//*")
-        For Each xNode In xNodes
-            If xNode.ChildNodes.Length < 2 And xNode.FirstChild.NodeType = NODE_TEXT Then
-                nodeName = xNode.nodeName
-                Set xParent = xNode.ParentNode
-                While Not xParent Is Nothing
-                    nodeName = xParent.nodeName & "/" & nodeName
-                    Set xParent = xParent.ParentNode
-                Wend
-                ActiveSheet.Cells(14 + nRow, 1) = nodeName
-                ActiveSheet.Cells(14 + nRow, 2) = xNode.Text
-                nRow = nRow + 1
-            End If
-        Next
+        xDoc.SetProperty "SelectionLanguage", "XPath"
+        Dim loc As MSXML2.IXMLDOMElement
+        Set loc = xDoc.SelectSingleNode("/reversegeocode/result")
+        If loc Is Nothing Then
+            Application.Caller.Font.ColorIndex = vbErr
+            NominatimReverseGeocode = xDoc.XML
+        Else
+            Application.Caller.Font.ColorIndex = vbOK
+            NominatimReverseGeocode = loc.Text
+        End If
     End If
-End Sub
+    Exit Function
+eh:
+    Debug.Print err.Description
+End Function
+
+
+Function NominatimGeocode(address As String) As String
+    Application.Caller.Font.ColorIndex = xlNone
+    Dim xDoc As New MSXML2.DOMDocument
+    xDoc.async = False
+    xDoc.Load ("https://nominatim.openstreetmap.org/search?format=xml&q=" + address)
+    If xDoc.parseError.ErrorCode <> 0 Then
+        Application.Caller.Font.ColorIndex = vbErr
+        NominatimGeocode = xDoc.parseError.reason
+    Else
+        xDoc.SetProperty "SelectionLanguage", "XPath"
+        Dim loc As MSXML2.IXMLDOMElement
+        Set loc = xDoc.SelectSingleNode("/searchresults/place")
+        If loc Is Nothing Then
+            Application.Caller.Font.ColorIndex = vbErr
+            NominatimGeocode = xDoc.XML
+        Else
+            Application.Caller.Font.ColorIndex = vbOK
+            NominatimGeocode = loc.getAttribute("lat") & "," & loc.getAttribute("lon")
+        End If
+    End If
+End Function
