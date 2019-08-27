@@ -58,7 +58,7 @@ Here, we use `A2&", "&B2` to concatenate the city and nation. The first cell wil
 
 Copy the formula into the entire column.
 
-![Result of copy-pasting the formula](copy-paste-geocode.png)
+![Result of copy-pasting the formula](docs/copy-paste-geocode.png)
 
 Automatic calculations are disabled to reduce the number of API requests. So, if you copy-paste or drag a formula, the formula is not rerun. The values are copied as-is.
 
