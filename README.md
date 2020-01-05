@@ -2,6 +2,12 @@
 
 This is an Excel file (with a Visual Basic macro function) that converts addresses to latitudes and longitudes (geocoding), and latitude-longitudes to addresses (reverse geocoding). This works through public geocoding APIs.
 
+## Requirements
+
+- It has been tested on Office 2017 and Office 365 on Windows.
+- It requires Excel 2013 or above (for the [WorksheetFunction.EncodeURL](https://docs.microsoft.com/en-us/office/vba/api/excel.worksheetfunction.encodeurl) method)
+- It only works on Windows. The `MSXML2` reference we use to access the APIs is not available on Mac.
+
 
 ## Nominatim Geocoding functions
 
