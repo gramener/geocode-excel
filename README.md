@@ -96,3 +96,12 @@ The result is an Excel sheet with 2 columns: Latitude and Longitude.
 
 1. Geocode the [airport locations in the UK](https://en.wikipedia.org/wiki/List_of_airports_in_the_United_Kingdom_and_the_British_Crown_Dependencies)
 2. Geocode the [post office locations in Singapore](https://www.singpost.com/list-of-post-offices)
+
+
+## Google Sheets alternatives
+
+If you prefer using Google's Geocoders on Google Sheets, use:
+
+- [Geocoding Sheet](https://docs.google.com/spreadsheets/d/12CYzTYXbRqCBEXa8no1eIbYPEOxRZlLaZVgMZahO07k/edit#gid=0) by [Christos Sameras](https://myengineeringworld.net/2018/08/geocoding-reverse-gas.html). Copy it and use it.
+- [Geocoding Marketplace App](https://workspace.google.com/marketplace/app/geocoding_by_smartmonkey/1033231575312). [Install it to use in Google Sheets](https://handsondataviz.org/geocode.html)
+- [Geocoding Macro](https://github.com/nuket/google-sheets-geocoding-macro) by [Max Vilimpoc](https://vilimpoc.org/blog/2013/07/11/google-spreadsheet-geocoding-macro/). Add it to your Google Sheet.
