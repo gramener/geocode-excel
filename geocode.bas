@@ -52,8 +52,8 @@ Function NominatimReverseGeocode(lat As Double, lng As Double) As String
     On Error GoTo eh
     Dim xDoc As New MSXML2.DOMDocument
     xDoc.async = False
-    Url = "https://nominatim.openstreetmap.org/reverse?lat=" + CStr(lat) + "&lon=" + CStr(lng)
-    xDoc.Load ("https://nominatim.openstreetmap.org/reverse?lat=" + CStr(lat) + "&lon=" + CStr(lng))
+    Url = "https://nominatim.openstreetmap.org/reverse?lat=" + Str(lat) + "&lon=" + Str(lng)
+    xDoc.Load ("https://nominatim.openstreetmap.org/reverse?lat=" + Str(lat) + "&lon=" + Str(lng))
     If xDoc.parseError.ErrorCode <> 0 Then
         Application.Caller.Font.ColorIndex = vbErr
         NominatimReverseGeocode = xDoc.parseError.reason
