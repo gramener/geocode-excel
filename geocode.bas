@@ -10,7 +10,7 @@ End Sub
 Function GoogleReverseGeocode(lat As Double, lng As Double, key As String) As String
     Dim xDoc As New MSXML2.DOMDocument
     xDoc.async = False
-    xDoc.Load ("https://maps.googleapis.com/maps/api/geocode/xml?key=" + key + "&latlng=" + Str(lat) + "," + Str(lng))
+    xDoc.Load ("https://maps.googleapis.com/maps/api/geocode/xml?key=" & key & "&latlng=" & lat + "," & lng)
     If xDoc.parseError.ErrorCode <> 0 Then
         Application.Caller.Font.ColorIndex = vbErr
         GoogleReverseGeocode = xDoc.parseError.reason
@@ -31,7 +31,7 @@ Function GoogleGeocode(address As String, key As String) As String
     Application.Caller.Font.ColorIndex = xlNone
     Dim xDoc As New MSXML2.DOMDocument
     xDoc.async = False
-    xDoc.Load ("https://maps.googleapis.com/maps/api/geocode/xml?key=" + key + "&address=" + address)
+    xDoc.Load ("https://maps.googleapis.com/maps/api/geocode/xml?key=" + key + "&address=" + WorksheetFunction.EncodeURL(address))
     If xDoc.parseError.ErrorCode <> 0 Then
         Application.Caller.Font.ColorIndex = vbErr
         GoogleGeocode = xDoc.parseError.reason
@@ -52,8 +52,8 @@ Function NominatimReverseGeocode(lat As Double, lng As Double) As String
     On Error GoTo eh
     Dim xDoc As New MSXML2.DOMDocument
     xDoc.async = False
-    Url = "https://nominatim.openstreetmap.org/reverse?lat=" + Str(lat) + "&lon=" + Str(lng)
-    xDoc.Load ("https://nominatim.openstreetmap.org/reverse?lat=" + Str(lat) + "&lon=" + Str(lng))
+    Url = "https://nominatim.openstreetmap.org/reverse?lat=" & lat & "&lon=" & lng
+    xDoc.Load (Url)
     If xDoc.parseError.ErrorCode <> 0 Then
         Application.Caller.Font.ColorIndex = vbErr
         NominatimReverseGeocode = xDoc.parseError.reason
@@ -79,7 +79,7 @@ Function NominatimGeocode(address As String) As String
     Application.Caller.Font.ColorIndex = xlNone
     Dim xDoc As New MSXML2.DOMDocument
     xDoc.async = False
-    xDoc.Load ("https://nominatim.openstreetmap.org/search?format=xml&q=" + address)
+    xDoc.Load ("https://nominatim.openstreetmap.org/search?format=xml&q=" + WorksheetFunction.EncodeURL(address))
     If xDoc.parseError.ErrorCode <> 0 Then
         Application.Caller.Font.ColorIndex = vbErr
         NominatimGeocode = xDoc.parseError.reason
